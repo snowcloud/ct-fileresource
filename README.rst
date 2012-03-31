@@ -1,1 +1,1 @@
-README.rst
+Generic app to manage files uploaded for groups and templates in ClinicalTemplates.org framework

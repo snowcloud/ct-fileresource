@@ -1,16 +1,35 @@
 """
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
+Tests for ct-fileresource
 """
 
+from django.db import models
 from django.test import TestCase
+from ct_fileresource.models import FileResource
 
+class Dummy(models.Model):
+    """docstring for Dummy"""
+    name = models.CharField(max_length=100)     
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
+class ResourceFileUnitTest(TestCase):
+    def test_models(self):
         """
         Tests that 1 + 1 always equals 2.
         """
-        self.assertEqual(1 + 1, 2)
+        dummy = Dummy(name='emma dummy')
+        dummy.save()
+
+        f = FileResource(name='blah', description='blahblah')
+        f.attached_to = dummy
+        f.save()
+        self.assertEqual(1, FileResource.objects.count())
+        f = FileResource.objects.get(name='blah')
+        self.assertEqual('blahblah', f.description)
+        self.assertEqual('emma dummy', f.attached_to.name)
+
+        from django.core.files.base import ContentFile
+        myfile = ContentFile("hello world")
+        f.resource.save('testfile.txt', myfile)
+        
+        f.resource.delete()
+    
+
