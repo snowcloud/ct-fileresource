@@ -38,8 +38,49 @@ class ResourceFileUnitTest(ResourceFileTestBase):
     
 class ViewsTestCase(ResourceFileTestBase):
 
-    def test_views(self):
-        pass
+    def setUp(self):
+        super(ViewsTestCase, self).setUp()
+
+        from django.test.client import Client
+
+        self.client = Client()
+
+        self.fr1 = FileResource(name='resource one', description='blahblah one')
+        self.fr1.attached_to = self.dummy
+        self.fr1.save()
+        self.fr2 = FileResource(name='resource two', description='blahblah two')
+        self.fr2.attached_to = self.dummy
+        self.fr2.save()
+
+
+    def test_no_files(self):
+
+        from django.core.urlresolvers import reverse
+
+        # response = self.client.get(reverse('fileresource_list'))
+        # self.assertEqual(response.status_code, 302)
+
+        # self.client.login(username='bob', password='password')
+
+        response = self.client.get(reverse('fileresource_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "list.html")
+
+    def test_files(self):
+
+        from django.core.urlresolvers import reverse
+
+        # response = self.client.get(reverse('fileresource_list'))
+        # self.assertEqual(response.status_code, 302)
+
+        # self.client.login(username='bob', password='password')
+
+        response = self.client.get(reverse('fileresource_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "resource one")
+        self.assertContains(response, "resource two")
+
+
 
 
 
