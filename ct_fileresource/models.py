@@ -19,7 +19,7 @@ class TemplateResourceManager(models.Manager):
 class FileResource(models.Model):
     """docstring for FileResource"""
     name = models.CharField(_('name'), max_length=100)
-    description = models.CharField(_('description'), max_length=250)
+    description = models.CharField(_('description'), max_length=450)
     resource = models.FileField(upload_to='groups')
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
