@@ -6,5 +6,6 @@ urlpatterns = patterns('ct_fileresource.views',
 
     url(r'^groups/(?P<object_id>[0-9A-Za-z]+)/$', 'group_fileresource_list', name="group_fileresource_list"),
     url(r'^template/(?P<object_id>[0-9A-Za-z]+)/$', 'template_fileresource_list', name="template_fileresource_list"),
+    url(r'^template/(?P<object_id>[0-9A-Za-z]+)/add/$', 'template_fileresource_list_add', name="template_fileresource_list_add"),
 
 )
