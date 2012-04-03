@@ -5,15 +5,13 @@ Tests for ct-fileresource
 from django.db import models
 from django.test import TestCase
 from ct_fileresource.models import FileResource
+from ct_groups.models import CTGroup
 
-class Dummy(models.Model):
-    """docstring for Dummy"""
-    name = models.CharField(max_length=100)     
 
 class ResourceFileTestBase(TestCase):
     def setUp(self):
-        self.dummy = Dummy(name='emma dummy')
-        self.dummy.save()
+        self.group = CTGroup(name='group one')
+        self.group.save()
 
 class ResourceFileUnitTest(ResourceFileTestBase):
 
@@ -23,12 +21,12 @@ class ResourceFileUnitTest(ResourceFileTestBase):
         """
 
         f = FileResource(name='blah', description='blahblah')
-        f.attached_to = self.dummy
+        f.attached_to = self.group
         f.save()
         self.assertEqual(1, FileResource.objects.count())
         f = FileResource.objects.get(name='blah')
         self.assertEqual('blahblah', f.description)
-        self.assertEqual('emma dummy', f.attached_to.name)
+        self.assertEqual('group one', f.attached_to.name)
 
         from django.core.files.base import ContentFile
         myfile = ContentFile("hello world")
@@ -46,10 +44,10 @@ class ViewsTestCase(ResourceFileTestBase):
         self.client = Client()
 
         self.fr1 = FileResource(name='resource one', description='blahblah one')
-        self.fr1.attached_to = self.dummy
+        self.fr1.attached_to = self.group
         self.fr1.save()
         self.fr2 = FileResource(name='resource two', description='blahblah two')
-        self.fr2.attached_to = self.dummy
+        self.fr2.attached_to = self.group
         self.fr2.save()
 
 
@@ -57,14 +55,9 @@ class ViewsTestCase(ResourceFileTestBase):
 
         from django.core.urlresolvers import reverse
 
-        # response = self.client.get(reverse('fileresource_list'))
-        # self.assertEqual(response.status_code, 302)
-
-        # self.client.login(username='bob', password='password')
-
         response = self.client.get(reverse('fileresource_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "list.html")
+        self.assertContains(response, "home")
 
     def test_files(self):
 
@@ -80,6 +73,9 @@ class ViewsTestCase(ResourceFileTestBase):
         self.assertContains(response, "resource one")
         self.assertContains(response, "resource two")
 
+    def test_attached_files(self):
+
+        from django.core.urlresolvers import reverse
 
 
 
