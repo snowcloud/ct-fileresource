@@ -74,7 +74,7 @@ def template_fileresource_add(request, object_id, next=None, template_name='ct_f
 def template_fileresource_edit(request, object_id, next=None, template_name='ct_fileresource/add.html'):
     # next = request.REQUEST.get('next', reverse('fileresource_list'))
     obj = get_object_or_404(FileResource, pk=object_id)
-    if not check_permission(request.user, obj.workgroup, 'resource', 'w'):
+    if not check_permission(request.user, obj.attached_to.workgroup, 'resource', 'w'):
         raise PermissionDenied()
     next = next or '%s?tView=files' % reverse('template-detail',kwargs={'object_id':obj.attached_to.id})
     if request.method == 'POST':
@@ -96,7 +96,7 @@ def template_fileresource_edit(request, object_id, next=None, template_name='ct_
 def template_fileresource_delete(request, object_id, next=None):
     obj = get_object_or_404(FileResource, pk=object_id)
     next = next or '%s?tView=files' % reverse('template-detail',kwargs={'object_id':obj.attached_to.id})
-    if not check_permission(request.user, obj.workgroup, 'resource', 'd'):
+    if not check_permission(request.user, obj.attached_to.workgroup, 'resource', 'd'):
         raise PermissionDenied()
     if request.POST:
         if request.POST['result'] == _('Cancel'):
