@@ -17,7 +17,7 @@ class TemplateResourceManager(models.Manager):
         return super(TemplateResourceManager, self).get_query_set().filter(content_type__pk=obj_ct.id)
 
 def _upload_path(instance, filename):
-    return 'fileresources/%s/%s/%s' % (instance.content_type.model, instance.id, filename)
+    return 'fileresources/%s/%s/%s' % (instance.content_type.model, instance.object_id, filename)
 
 class FileResource(models.Model):
     """docstring for FileResource"""
