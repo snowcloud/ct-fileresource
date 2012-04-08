@@ -16,11 +16,14 @@ class TemplateResourceManager(models.Manager):
         obj_ct = ContentType.objects.get(app_label="ct_template", model="clintemplate")
         return super(TemplateResourceManager, self).get_query_set().filter(content_type__pk=obj_ct.id)
 
+def _upload_path(instance, filename):
+    return 'fileresources/%s/%s/%s' % (instance.content_type.model, instance.id, filename)
+
 class FileResource(models.Model):
     """docstring for FileResource"""
     name = models.CharField(_('name'), max_length=100)
     description = models.TextField(_('description'))
-    resource = models.FileField(upload_to='groups')
+    resource = models.FileField(upload_to=_upload_path)
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     attached_to = generic.GenericForeignKey('content_type', 'object_id')
@@ -32,3 +35,5 @@ class FileResource(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
 
+    def path(self):
+        return 'files/%s' % self.content_type.model

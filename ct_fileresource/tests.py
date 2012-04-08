@@ -34,48 +34,48 @@ class ResourceFileUnitTest(ResourceFileTestBase):
 
         f.resource.delete()
     
-class ViewsTestCase(ResourceFileTestBase):
+# class ViewsTestCase(ResourceFileTestBase):
 
-    def setUp(self):
-        super(ViewsTestCase, self).setUp()
+#     def setUp(self):
+#         super(ViewsTestCase, self).setUp()
 
-        from django.test.client import Client
+#         from django.test.client import Client
 
-        self.client = Client()
+#         self.client = Client()
 
-        self.fr1 = FileResource(name='resource one', description='blahblah one')
-        self.fr1.attached_to = self.group
-        self.fr1.save()
-        self.fr2 = FileResource(name='resource two', description='blahblah two')
-        self.fr2.attached_to = self.group
-        self.fr2.save()
+#         self.fr1 = FileResource(name='resource one', description='blahblah one')
+#         self.fr1.attached_to = self.group
+#         self.fr1.save()
+#         self.fr2 = FileResource(name='resource two', description='blahblah two')
+#         self.fr2.attached_to = self.group
+#         self.fr2.save()
 
 
-    def test_no_files(self):
+#     def test_no_files(self):
 
-        from django.core.urlresolvers import reverse
+#         from django.core.urlresolvers import reverse
 
-        response = self.client.get(reverse('fileresource_list'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "home")
+#         response = self.client.get(reverse('fileresource_list'))
+#         self.assertEqual(response.status_code, 200)
+#         self.assertContains(response, "home")
 
-    def test_files(self):
+#     def test_files(self):
 
-        from django.core.urlresolvers import reverse
+#         from django.core.urlresolvers import reverse
 
-        # response = self.client.get(reverse('fileresource_list'))
-        # self.assertEqual(response.status_code, 302)
+#         # response = self.client.get(reverse('fileresource_list'))
+#         # self.assertEqual(response.status_code, 302)
 
-        # self.client.login(username='bob', password='password')
+#         # self.client.login(username='bob', password='password')
 
-        response = self.client.get(reverse('fileresource_list'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "resource one")
-        self.assertContains(response, "resource two")
+#         response = self.client.get(reverse('fileresource_list'))
+#         self.assertEqual(response.status_code, 200)
+#         self.assertContains(response, "resource one")
+#         self.assertContains(response, "resource two")
 
-    def test_attached_files(self):
+#     def test_attached_files(self):
 
-        from django.core.urlresolvers import reverse
+#         from django.core.urlresolvers import reverse
 
 
 
